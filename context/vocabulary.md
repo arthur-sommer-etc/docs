@@ -73,7 +73,8 @@ Use these terms consistently. Avoid synonyms not listed here.
 
 - **team** — A grouping of users and team API keys that share permissions.
 - **permission** — A granular access control attribute (e.g., VIEW_PORTFOLIO, VULNERABILITY_ANALYSIS, POLICY_MANAGEMENT).
-- **API key** — A long-lived authentication token. Either a *team API key*, scoped to a team, or owned by a service account and acting as it.
+- **API key** — An authentication token. Either a *team API key*, scoped to a team, or a user-owned key that acts as its owner. User-owned keys include service account keys and personal access tokens.
+- **personal access token** — An expiring, user-owned API key for a managed, LDAP, or OIDC account. Uses the owner's current local permissions and portfolio access. Managed through the owner's signed-in session.
 - **managed user** — A user account managed within Dependency-Track.
 - **LDAP/OIDC user** — A user account managed by an external identity provider.
 - **service account** — A non-human user for automation, authenticated only by its own API keys. Username starts with the reserved `svc:` prefix. Available in 5.2.0 and later.

@@ -23,6 +23,41 @@ Four types of users exist:
 All user types share the same permission model. The authentication mechanism determines
 how the system verifies a user's identity, not what they can access.
 
+### Personal access tokens
+
+!!! warning "Unreleased"
+
+    Personal access tokens require matching API server and frontend versions that include this feature. They aren't available in Dependency-Track 5.2.1.
+
+A personal access token is an expiring API key owned by a human account. Managed,
+LDAP, and OIDC users can create named tokens for scripts that act on their behalf.
+Requests keep the owner's identity, rather than the shared identity of a team
+API key. Service accounts remain the intended identity for shared automation.
+
+A token has the same effective permissions and portfolio access as its owner.
+Tokens don't have separate, narrower scopes. Dependency-Track resolves local
+permissions and team membership on each authenticated request, so local access
+changes also affect existing tokens. Token-to-team assignments don't grant extra
+access to user-owned tokens.
+
+Token management requires a signed-in human session. A token can't create,
+list, or revoke tokens through the self-service token interface, or use
+self-service password changes. Administrative permissions still apply to
+tokens, including access to administrative account-management operations. The full secret
+appears only at creation. The token list contains metadata, not retrievable
+secrets. Last-used timestamps are informational, not a complete audit record.
+
+Expiry and revocation stop authentication on future requests. Suspending a
+managed user also stops their tokens until the suspension ends. Deleting a local
+user deletes their tokens.
+
+!!! warning "External identity changes aren't immediate"
+
+    Token authentication doesn't contact LDAP or OIDC providers to revalidate the account or refresh group membership. Disabling an external account alone doesn't revoke its tokens. Local permissions reflect the most recent synchronization through the existing login flow. LDAP and OIDC users don't support local suspension. Offboarding must include revocation by the token owner or administrator deletion of the local user, not only disabling the account in the identity provider.
+
+See [Manage personal access tokens](../guides/user/managing-personal-access-tokens.md)
+for creation, replacement, and revocation procedures.
+
 ### Service accounts
 
 !!! note "Available in 5.2.0 and later"
@@ -87,7 +122,7 @@ credential at all.
 
 Deleting a team also deletes its API keys and any project access assignments
 made through it. It keeps projects, user accounts, and API keys owned by service
-accounts, but users lose the permissions they had inherited from the deleted team.
+accounts or human users, but users lose the permissions they had inherited from the deleted team.
 
 ## Portfolio access control
 
